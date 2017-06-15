@@ -1,5 +1,5 @@
 {
-    "name": "casperlaitw/laravel-fb-messenger",
+    "name": "Iprieto/laravel-fb-messenger",
     "type": "library",
     "description": "A Laravel Package to Integrate Facebook Messenger API",
     "keywords": [
@@ -8,12 +8,12 @@
         "chatbot",
         "laravel"
     ],
-    "homepage": "https://github.com/casperlaitw/laravel-fb-messenger",
+    "homepage": "https://github.com/Iprieto/laravel-fb-messenger",
     "license": "MIT",
     "authors": [
         {
-            "name": "Casper Lai",
-            "email": "casper.lai@sleepingdesign.com",
+            "name": "Igor Prieto",
+            "email": "ipechepare@gmail.com",
             "role": "Developer"
         }
     ],
