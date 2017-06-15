@@ -9,6 +9,7 @@ namespace Casperlaitw\LaravelFbMessenger\Contracts;
 
 use Casperlaitw\LaravelFbMessenger\Collections\ReceiveMessageCollection;
 use Casperlaitw\LaravelFbMessenger\Contracts\Debug\Debug;
+use Casperlaitw\LaravelFbMessenger\Contracts\ReferralHandler;
 use Casperlaitw\LaravelFbMessenger\Messages\ReceiveMessage;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository;
@@ -129,7 +130,7 @@ class WebhookHandler
         foreach ($referrals as $item) {
             $referral = $this->app->make($item);
             if ($referral instanceof ReferralHandler) {
-                $this->referrals[$referral->getReferral()] = $this->createBot($referral);
+                $this->referrals[] = $this->createBot($referral);
             }
         }
     }
@@ -165,8 +166,12 @@ class WebhookHandler
                 return;
             }
 
-            foreach ($this->referrals as $referral) {
-                $handler->handle($message);
+            if ($message->isReferral()) {
+                foreach ($this->referrals as $referral) {
+                    $referral->handle($message);
+                    break;
+                }
+                return;
             }
 
             foreach ($this->handlers as $handler) {

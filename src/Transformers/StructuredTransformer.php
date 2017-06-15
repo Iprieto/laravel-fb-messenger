@@ -7,7 +7,7 @@
 
 namespace Casperlaitw\LaravelFbMessenger\Transformers;
 
-use Casperlaitw\LaravelFbMessenger\Contracts\Messages\Template;
+use Casperlaitw\LaravelFbMessenger\Contracts\Messages\Message;
 
 /**
  * Interface StructuredTransformer
@@ -18,9 +18,9 @@ interface StructuredTransformer
     /**
      * Transform payload
      *
-     * @param Template $message
+     * @param Message $message
      *
      * @return array
      */
-    public function transform(Template $message);
+    public function transform(Message $message);
 }
