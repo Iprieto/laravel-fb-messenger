@@ -66,6 +66,18 @@ class Receiver
                         )
                     ))
                     ->setPayload(true);
+            } else if (Arr::has($message, 'postback.referral')) {
+                $receiveMessage
+                    ->setReferral(Arr::get(
+                        $message,
+                        'postback.referral'
+                    ));
+            } else if (Arr::has($message, 'referral')) {
+                $receiveMessage
+                    ->setReferral(Arr::get(
+                        $message,
+                        'referral'
+                    ));
             } else {
                 $receiveMessage
                     ->setMessage(Arr::get($message, 'message.text'))

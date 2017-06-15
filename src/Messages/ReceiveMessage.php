@@ -35,6 +35,11 @@ class ReceiveMessage
     private $payload = false;
 
     /**
+     * @var bool
+     */
+    private $referral = false;
+
+    /**
      * @var string
      */
     private $postback;
@@ -139,6 +144,16 @@ class ReceiveMessage
     }
 
     /**
+     * Get referral payload
+     *
+     * @return string
+     */
+    public function getReferral()
+    {
+        return $this->referral;
+    }
+
+    /**
      * Set payload
      *
      * @param $payload
@@ -152,6 +167,19 @@ class ReceiveMessage
     }
 
     /**
+     * Set referral
+     *
+     * @param $payload
+     *
+     * @return $this
+     */
+    public function setReferral($referral)
+    {
+        $this->referral = $referral;
+        return $this;
+    }
+
+    /**
      * Is playload message
      *
      * @return boolean
@@ -159,6 +187,16 @@ class ReceiveMessage
     public function isPayload()
     {
         return $this->payload;
+    }
+
+    /**
+     * Is referral message
+     *
+     * @return boolean
+     */
+    public function isReferral()
+    {
+        return $this->referral;
     }
 
     /**

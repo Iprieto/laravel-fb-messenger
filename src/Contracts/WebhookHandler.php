@@ -12,6 +12,7 @@ use Casperlaitw\LaravelFbMessenger\Contracts\Debug\Debug;
 use Casperlaitw\LaravelFbMessenger\Messages\ReceiveMessage;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class WebhookHandler
@@ -28,6 +29,11 @@ class WebhookHandler
      * @var array
      */
     private $postbacks = [];
+
+    /**
+     * @var array
+     */
+    private $referrals = [];
 
     /**
      * Access token
@@ -81,6 +87,7 @@ class WebhookHandler
     {
         $this->createHandler();
         $this->createPostbacks();
+        $this->createReferral();
         return $this;
     }
 
@@ -108,6 +115,21 @@ class WebhookHandler
             $postback = $this->app->make($item);
             if ($postback instanceof PostbackHandler) {
                 $this->postbacks[$postback->getPayload()] = $this->createBot($postback);
+            }
+        }
+    }
+
+    /**
+     * Create referrals
+     *
+     */
+    private function createReferral()
+    {
+        $referrals = $this->config->get('fb-messenger.referrals');
+        foreach ($referrals as $item) {
+            $referral = $this->app->make($item);
+            if ($referral instanceof ReferralHandler) {
+                $this->referrals[$referral->getReferral()] = $this->createBot($referral);
             }
         }
     }
@@ -141,6 +163,10 @@ class WebhookHandler
                     }
                 }
                 return;
+            }
+
+            foreach ($this->referrals as $referral) {
+                $handler->handle($message);
             }
 
             foreach ($this->handlers as $handler) {
