@@ -35,9 +35,14 @@ class ReceiveMessage
     private $payload = false;
 
     /**
+     * @var string
+     */
+    private $referral;
+
+    /**
      * @var bool
      */
-    private $referral = false;
+    private $ref = false;
 
     /**
      * @var string
@@ -144,13 +149,26 @@ class ReceiveMessage
     }
 
     /**
-     * Get referral payload
+     * Set referral ref
+     *
+     * @param $ref
+     *
+     * @return $this
+     */
+    public function setRef($ref)
+    {
+        $this->ref = $ref;
+        return $this;
+    }
+
+    /**
+     * Get referral ref
      *
      * @return string
      */
-    public function getReferral()
+    public function getRef()
     {
-        return $this->referral;
+        return $this->ref;
     }
 
     /**

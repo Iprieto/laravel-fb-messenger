@@ -18,20 +18,6 @@ use Casperlaitw\LaravelFbMessenger\Transformers\GenericTransformer;
 class GenericTemplate extends Template
 {
     /**
-     * Horizontal image
-     */
-    const IMAGE_HORIZONTAL = 'horizontal';
-    /**
-     * Square image
-     */
-    const IMAGE_SQUARE = 'square';
-
-    /**
-     * @var string
-     */
-    private $imageRatio = self::IMAGE_HORIZONTAL;
-
-    /**
      * Generic constructor.
      *
      * @param $sender
@@ -54,28 +40,6 @@ class GenericTemplate extends Template
         $this->setPayload($payload);
 
         return parent::toData();
-    }
-
-    /**
-     * Set image aspect ratio
-     *
-     * @param $value
-     * @return $this
-     */
-    public function setImageRatio($value)
-    {
-        $this->imageRatio = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get image ratio
-     * @return string
-     */
-    public function getImageRatio()
-    {
-        return $this->imageRatio;
     }
 
     /**

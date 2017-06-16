@@ -7,7 +7,6 @@
 
 namespace Casperlaitw\LaravelFbMessenger\Contracts;
 
-use Casperlaitw\LaravelFbMessenger\Contracts\Messages\CodeInterface;
 use Casperlaitw\LaravelFbMessenger\Contracts\Messages\UserInterface;
 use Casperlaitw\LaravelFbMessenger\Contracts\Messages\Message;
 use Casperlaitw\LaravelFbMessenger\Contracts\Messages\ProfileInterface;
@@ -162,10 +161,6 @@ class Bot
             return $this->sendUserApi($message);
         }
 
-        if ($message instanceof CodeInterface) {
-            return $this->sendMessengerCode($message->toData());
-        }
-
         return $this->sendMessage($message->toData());
     }
 
@@ -203,18 +198,6 @@ class Bot
     protected function sendUserApi($message)
     {
         return $this->call($message->getSender(), [], self::TYPE_GET);
-    }
-
-    /**
-     * Send message code endpoint
-     *
-     * @param $message
-     * @return array
-     * @throws \RuntimeException
-     */
-    private function sendMessengerCode($message)
-    {
-        return $this->call('me/messenger_codes', $message);
     }
 
     /**

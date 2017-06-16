@@ -10,6 +10,7 @@ namespace Casperlaitw\LaravelFbMessenger\Messages;
 use Casperlaitw\LaravelFbMessenger\Collections\ReceiveMessageCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class Receiver
@@ -54,7 +55,14 @@ class Receiver
         foreach ($this->messaging as $message) {
             $receiveMessage = new ReceiveMessage(Arr::get($message, 'recipient.id'), Arr::get($message, 'sender.id'));
             // is payload
-            if (Arr::has($message, 'postback.payload') || Arr::has($message, 'message.quick_reply.payload')) {
+            if (Arr::has($message, 'postback.referral')) {
+                $receiveMessage
+                    ->setRef(Arr::get(
+                        $message,
+                        'postback.referral.ref'
+                    ))
+                    ->setReferral(true);
+            } else if (Arr::has($message, 'postback.payload') || Arr::has($message, 'message.quick_reply.payload')) {
                 $receiveMessage
                     ->setMessage(Arr::get($message, 'message.text'))
                     ->setPostback(Arr::get(
@@ -66,18 +74,13 @@ class Receiver
                         )
                     ))
                     ->setPayload(true);
-            } else if (Arr::has($message, 'postback.referral')) {
-                $receiveMessage
-                    ->setReferral(Arr::get(
-                        $message,
-                        'postback.referral'
-                    ));
             } else if (Arr::has($message, 'referral')) {
                 $receiveMessage
-                    ->setReferral(Arr::get(
+                    ->setRef(Arr::get(
                         $message,
-                        'referral'
-                    ));
+                        'referral.ref'
+                    ))
+                    ->setReferral(true);
             } else {
                 $receiveMessage
                     ->setMessage(Arr::get($message, 'message.text'))
