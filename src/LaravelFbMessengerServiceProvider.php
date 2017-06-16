@@ -14,74 +14,85 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class LaravelFbMessengerServiceProvider
- * @package Casperlaitw\LaravelFbMessenger
- */
+* Class LaravelFbMessengerServiceProvider
+* @package Casperlaitw\LaravelFbMessenger
+*/
 class LaravelFbMessengerServiceProvider extends ServiceProvider
 {
-    /**
-     * Config path
-     * @var string
-     */
-    protected $configPath = __DIR__ . '/../config/fb-messenger.php';
+   /**
+    * Config path
+    * @var string
+    */
+   protected $configPath = __DIR__ . '/../config/fb-messenger.php';
 
-    /**
-     * Menu path
-     *
-     * @var string
-     */
-    protected $menuPath = __DIR__ . '/../config/menu.php';
+   /**
+    * Menu path
+    *
+    * @var string
+    */
+   protected $menuPath = __DIR__ . '/../config/menu.php';
 
-    /**
-     * Perform post-registration booting of services.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function boot()
-    {
-        $this->publishes([
-            $this->configPath => $this->app->configPath().'/fb-messenger.php',
-        ], 'config');
+   /**
+    * Menu path
+    *
+    * @var string
+    */
+   protected $webPath = __DIR__ . '/../config/web.php';
 
-        $this->publishes([
-            $this->menuPath => $this->app->basePath().'/routes/menu.php',
-        ], 'menu');
+   /**
+    * Perform post-registration booting of services.
+    *
+    * @throws \InvalidArgumentException
+    */
+   public function boot()
+   {
+       $this->publishes([
+           $this->configPath => $this->app->configPath().'/fb-messenger.php',
+       ], 'config');
 
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-fb-messenger');
-        $this->publishes([__DIR__.'/../public' => $this->app->basePath().'/public/vendor'], 'public');
+       $this->publishes([
+           $this->menuPath => $this->app->basePath().'/routes/menu.php',
+       ], 'menu');
 
-        if ($this->app['config']->get('fb-messenger.debug')) {
-            $this->app->extend(ExceptionHandler::class, function ($exceptionHandler, $app) {
-                $debug = $app->make(Debug::class);
-                return new Handler($exceptionHandler, $debug);
-            });
-        }
-    }
+       $this->publishes([
+           $this->webPath => $this->app->basePath().'/routes/webhook.php',
+       ], 'web');
 
-    /**
-     * Register any package services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->mergeConfigFrom($this->configPath, 'fb-messenger');
-        $this->app->register(RouteServiceProvider::class);
-        $this->app->register(MenuServiceProvider::class);
-        $this->app->singleton(Debug::class, Debug::class);
-        $this->registerCommands();
-    }
+       $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-fb-messenger');
+       $this->publishes([__DIR__.'/../public' => $this->app->basePath().'/public/vendor'], 'public');
 
-    /**
-     * Register commands
-     */
-    private function registerCommands()
-    {
-        $this->commands([
-            GreetingTextCommand::class,
-            GetStartButtonCommand::class,
-            PersistentMenuCommand::class,
-            DomainWhitelistingCommand::class,
-        ]);
-    }
+       if ($this->app['config']->get('fb-messenger.debug')) {
+           $this->app->extend(ExceptionHandler::class, function ($exceptionHandler, $app) {
+               $debug = $app->make(Debug::class);
+               return new Handler($exceptionHandler, $debug);
+           });
+       }
+   }
+
+   /**
+    * Register any package services.
+    *
+    * @return void
+    */
+   public function register()
+   {
+       $this->mergeConfigFrom($this->configPath, 'fb-messenger');
+       $this->app->register(RouteServiceProvider::class);
+       $this->app->register(MenuServiceProvider::class);
+       $this->app->singleton(Debug::class, Debug::class);
+       $this->registerCommands();
+   }
+
+   /**
+    * Register commands
+    */
+   private function registerCommands()
+   {
+       $this->commands([
+           GreetingTextCommand::class,
+           GetStartButtonCommand::class,
+           PersistentMenuCommand::class,
+           DomainWhitelistingCommand::class,
+       ]);
+   }
 }

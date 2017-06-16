@@ -20,7 +20,7 @@ class RouteServiceProvider extends ServiceProvider
     * Controller namespace
     * @var string
     */
-   // protected $namespace = ‘Casperlaitw\LaravelFbMessenger\Controllers’;
+   // protected $namespace = 'Casperlaitw\LaravelFbMessenger\Controllers';
 
    /**
     * Register the webhook to router
@@ -30,9 +30,9 @@ class RouteServiceProvider extends ServiceProvider
    {
        // if (!$this->app->routesAreCached()) {
        //     $router->group([
-       //         ‘namespace’ => $this->namespace,
+       //         'namespace' => $this->namespace,
        //     ], function (Router $router) {
-       //         require __DIR__.‘/../routes/web.php’;
+       //         require __DIR__.'/../routes/web.php';
        //     });
        // }
    }
@@ -42,9 +42,9 @@ class RouteServiceProvider extends ServiceProvider
     */
    public function register()
    {
-       if (file_exists(“{$this->app->basePath()}/routes/fb-messenger/webhook.php”)) {
+       if (file_exists("{$this->app->basePath()}/routes/fb-messenger/webhook.php")) {
 
-           require $this->app->basePath() . ‘/routes/fb-messenger/webhook.php’;
+           require $this->app->basePath() . '/routes/fb-messenger/webhook.php';
 
        }
    }
